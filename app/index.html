@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Выбор уроков из базы данных</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .container { max-width: 600px; margin: 40px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background: #f9f9f9; }
+    h2 { margin-bottom: 16px; }
+    .lesson-list { margin-bottom: 24px; }
+    label { display: block; margin-bottom: 8px; }
+    button { padding: 8px 16px; font-size: 1em; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Выберите уроки для обучения</h2>
+    <form id="lessonForm">
+      <div class="lesson-list">
+        <!-- Статический список для примера, можно заменить на динамический -->
+        <label><input type="checkbox" name="lesson" value="Automation QA engineer"> Automation QA engineer</label>
+        <label><input type="checkbox" name="lesson" value="Data analyst"> Data analyst</label>
+        <label><input type="checkbox" name="lesson" value="DevOps engineer"> DevOps engineer</label>
+        <label><input type="checkbox" name="lesson" value="Digital marketer"> Digital marketer</label>
+        <label><input type="checkbox" name="lesson" value="Front-end developer"> Front-end developer</label>
+        <label><input type="checkbox" name="lesson" value="QA engineer"> QA engineer</label>
+        <!-- Добавьте остальные папки по необходимости -->
+      </div>
+      <button type="button" onclick="submitLessons()">Выбрать</button>
+    </form>
+    <div id="selectedLessons"></div>
+  </div>
+  <script>
+    function submitLessons() {
+      const checked = Array.from(document.querySelectorAll('input[name="lesson"]:checked')).map(cb => cb.value);
+      document.getElementById('selectedLessons').innerText =
+        checked.length ? 'Вы выбрали: ' + checked.join(', ') : 'Выберите хотя бы один урок.';
+
+      // Отправляем выбранные уроки в расширение VS Code
+      if (checked.length && typeof acquireVsCodeApi === 'function') {
+        const vscode = acquireVsCodeApi();
+        vscode.postMessage({ command: 'saveSelection', selectedLessons: checked });
+      }
+    }
+  </script>
+</body>
+</html>

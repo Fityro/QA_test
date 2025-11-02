@@ -1,0 +1,91 @@
+{
+  "name": "training-catalog-examiner",
+  "displayName": "Training Catalog Examiner",
+  "description": "VS Code extension for selecting training folders and starting an exam in Copilot chat.",
+  "version": "0.0.1",
+  "publisher": "fityro",
+  "engines": {
+    "vscode": ">=1.70.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "trainingCatalogExaminer.start",
+        "title": "Открыть Training Examiner"
+      },
+      {
+        "command": "trainingCatalogExaminer.toggleCourse",
+        "title": "Переключить выбор курса"
+      },
+      {
+        "command": "trainingCatalogExaminer.startFromSelection",
+        "title": "Начать экзамен",
+        "icon": "$(play)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "trainingCatalogExaminer.start",
+        "key": "ctrl+alt+e",
+        "when": "editorTextFocus"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "trainingExaminer",
+          "title": "Training Examiner",
+          "icon": "$(play)"
+        }
+      ]
+    },
+    "views": {
+      "trainingExaminer": [
+        {
+          "id": "trainingExaminerView",
+          "name": "Выберите направления",
+          "when": "true"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "trainingExaminerView",
+        "contents": "Выберите курсы с помощью чекбоксов и нажмите кнопку запуска экзамена"
+      }
+    ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "trainingCatalogExaminer.toggleFolder",
+          "when": "view == trainingExaminerView && viewItem == folderItem",
+          "group": "inline"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "trainingCatalogExaminer.startFromSelection",
+          "when": "view == trainingExaminerView",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "@types/node": "^24.9.2",
+    "typescript": "^5.9.3",
+    "vscode": "^1.1.37"
+  },
+  "dependencies": {}
+}
